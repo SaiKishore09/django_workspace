@@ -48,3 +48,63 @@ Once you have completed the development, Please raise the pull request from your
 _This repository is meant to facilitate the interview process @Designstring and only referred candidates for the interview process are requested to access_
 
 Happy Coding!!!
+
+------"models"------
+from django.db import models
+
+class users(models.Model):
+    name=models.CharField(max_length=10)
+    email=models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+------'"admin"--------
+
+from django.contrib import admin
+from . models import users
+
+admin.site.register(users)
+
+
+---------"serializers"--------
+
+from django.contrib import admin
+from . models import users
+
+admin.site.register(users)
+
+---------"views"----------
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from . models import users
+from . serializers import userserializers
+
+class userlist(APIView):
+
+    def get(self,request):
+        user1=users.objects.all()
+        serializer=userserializers(user1,many=True)
+        return Response(serializer.data)
+
+------------"urls"-----
+
+from django.contrib import admin
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
+from social import views
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('users/', views.userlist.as_view()),
+]
+
+
+
+
